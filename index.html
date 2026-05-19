@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="et">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ZenOffice | Shiatsu massaaž, arvutiabi ja muusika produktsioon</title>
+  <meta name="description" content="ZenOffice pakub shiatsu massaaži, arvutiabi ja muusika produktsiooni Jaapani inspiratsiooniga, must-valges stiilis.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8f8f6;
+      --text: #111111;
+      --muted: #5b5b5b;
+      --line: #d8d8d2;
+      --accent: #111111;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; }
+
+    .hero {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top right, rgba(0,0,0,0.08), transparent 35%),
+        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(248,248,246,0.98));
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 0;
+    }
+
+    .brand {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.08em;
+    }
+
+    .nav-links { display: flex; gap: 1.5rem; color: var(--muted); }
+
+    .hero-content {
+      padding: 8rem 0 6rem;
+      max-width: 760px;
+    }
+
+    .eyebrow, .section-kicker {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Noto Serif JP', serif;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    h1 { font-size: clamp(3rem, 7vw, 5.5rem); margin-top: 0.75rem; }
+
+    .lead {
+      font-size: 1.1rem;
+      max-width: 58ch;
+      color: var(--muted);
+      margin: 1.5rem 0 2rem;
+    }
+
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.95rem 1.4rem;
+      border: 1px solid var(--text);
+      transition: 0.2s ease;
+    }
+
+    .btn-primary { background: var(--accent); color: var(--white); }
+    .btn-secondary { background: transparent; color: var(--text); }
+    .btn:hover { transform: translateY(-2px); }
+
+    .section { padding: 5.5rem 0; }
+
+    .section-heading { margin-bottom: 2rem; }
+    .section-heading p {
+      margin: 0 0 0.35rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.8rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .card, .quote-box, .contact-form {
+      background: rgba(255,255,255,0.72);
+      border: 1px solid var(--line);
+    }
+
+    .card { padding: 1.5rem; min-height: 240px; }
+    .icon { font-size: 1.8rem; display: inline-block; margin-bottom: 1rem; }
+
+    .section-alt {
+      background: #efefec;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .quote-box {
+      padding: 2rem;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.6rem;
+      text-align: center;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 0.9rem;
+      padding: 1.25rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.95rem 1rem;
+      border: 1px solid var(--line);
+      background: var(--white);
+      font: inherit;
+    }
+
+    @media (max-width: 900px) {
+      .cards, .split, .contact-grid { grid-template-columns: 1fr; }
+      .nav { flex-direction: column; gap: 0.75rem; }
+      .hero-content { padding-top: 5rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <nav class="nav container">
+      <div class="brand">ZenOffice</div>
+      <div class="nav-links">
+        <a href="#teenused">Teenused</a>
+        <a href="#meist">Meist</a>
+        <a href="#kontakt">Kontakt</a>
+      </div>
+    </nav>
+
+    <section class="hero-content container">
+      <p class="eyebrow">Shiatsu massaaž · Arvutiabi · Muusika produktsioon · Jaapani rahu</p>
+      <h1>Tasakaal keha, tehnika ja loovuse vahel.</h1>
+      <p class="lead">ZenOffice ühendab vaikse, puhta Jaapani esteetika ning praktilise igapäevase abi. Aitame sul lõõgastuda, taastuda, digimured lahendada ja muusikat luua.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#kontakt">Broneeri aeg</a>
+        <a class="btn btn-secondary" href="#teenused">Vaata teenuseid</a>
+      </div>
+    </section>
+  </header>
+
+  <main>
+    <section id="teenused" class="section container">
+      <div class="section-heading">
+        <p>Teenused</p>
+        <h2>Selge valik, rahulik kogemus</h2>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <span class="icon">◯</span>
+          <h3>Shiatsu massaaž</h3>
+          <p>Õrn, kuid sügav keha tasakaalustav massaaž, mis aitab vähendada pinget ja taastada hea enesetunde.</p>
+        </article>
+        <article class="card">
+          <span class="icon">▣</span>
+          <h3>Arvutiabi</h3>
+          <p>Abi seadistuste, tarkvara, interneti ja igapäevaste tehniliste muredega kodus või kontoris.</p>
+        </article>
+        <article class="card">
+          <span class="icon">♪</span>
+          <h3>Muusika produktsioon</h3>
+          <p>Helitöötlus, miks, masterdamine ja muusika tootmine professionaalsel tasemel. Kõik žanrid.</p>
+    
+      </div>
+    </section>
+
+    <section id="meist" class="section section-alt">
+      <div class="container split">
+        <div>
+          <p class="section-kicker">Meist</p>
+          <h2>Minimalistlik, rahulik ja usaldusväärne</h2>
+          <p>ZenOffice on loodud inimestele, kes hindavad lihtsust, kvaliteeti ja tähelepanu detailidele. Must-valge visuaal, palju õhku ja Jaapani inspireeritud vormid loovad elegantse ning professionaalse mulje.</p>
+        </div>
+        <div class="quote-box">
+          <p>„Vähem müra. Rohkem selgust.”</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontakt" class="section container contact-grid">
+      <div>
+        <p class="section-kicker">Kontakt</p>
+        <h2>Võta ühendust</h2>
+        <p>Kirjuta meile, et broneerida shiatsu aeg, küsida arvutiabi või rääkida muusika projektist.</p>
+      </div>
+      <form class="contact-form">
+        <input type="text" placeholder="Sinu nimi">
+        <input type="email" placeholder="E-posti aadress">
+        <textarea rows="5" placeholder="Sõnum"></textarea>
+        <button class="btn btn-primary" type="submit">Saada päring</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
