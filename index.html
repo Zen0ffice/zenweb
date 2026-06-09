@@ -1,13 +1,13 @@
-<!doctype html>
-<html lang="et">
-<head>
-  <meta charset="utf-8">
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html lang="et"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ZenOffice | Shiatsu massaaž, arvutiabi ja muusika produktsioon</title>
   <meta name="description" content="ZenOffice pakub shiatsu massaaži, arvutiabi ja muusika produktsiooni Jaapani inspiratsiooniga, must-valges stiilis.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="./index_files/css2" rel="stylesheet">
   <style>
     :root {
       color-scheme: light;
@@ -97,17 +97,39 @@
     }
 
     .theme-switch {
-      background: rgba(255, 255, 255, 0.8);
-      color: var(--text);
+      background: #d9d9d9;
+      color: #111111;
       width: 44px;
       height: 44px;
       padding: 0;
       font-size: 1.15rem;
       line-height: 1;
+      border: 1px solid #d9d9d9;
+      box-shadow: none;
     }
 
     .theme-switch:hover,
     .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .flag-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      font-size: 1.3rem;
+      line-height: 1;
+      border-radius: 999px;
+      transition: 0.2s ease;
+      cursor: pointer;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      text-decoration: none;
+    }
+    .flag-btn:hover {
       transform: translateY(-2px);
     }
 
@@ -244,10 +266,9 @@
     }
 
     .contact-form {
-      display: grid;
-      gap: 0.9rem;
-      padding: 1.25rem;
+      padding: 1.5rem;
       border-radius: 18px;
+      font-size: 1.05rem;
     }
 
     input,
@@ -303,8 +324,10 @@
           <a href="#teenused">Teenused</a>
           <a href="#meist">Meist</a>
           <a href="#kontakt">Kontakt</a>
+          <a href="music.html">Muusika</a>
         </div>
         <a class="btn theme-switch" href="index2.html" aria-label="Tume versioon" title="Tume versioon">☾</a>
+        <a class="flag-btn" href="zork.html" aria-label="Zork versioon" title="Zork versioon">🇯🇵</a>
       </div>
     </nav>
 
@@ -313,8 +336,8 @@
       <h1>Tasakaal keha, tehnika ja loovuse vahel.</h1>
       <p class="lead">ZenOffice ühendab vaikse, puhta Jaapani esteetika ning praktilise igapäevase abi. Aitame sul lõõgastuda, taastuda, digimured lahendada ja muusikat luua.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#kontakt">Broneeri aeg</a>
-        <a class="btn btn-secondary" href="#teenused">Vaata teenuseid</a>
+        <a class="btn btn-primary" href="https://zenoffice.neocities.org/#kontakt">Broneeri aeg</a>
+        <a class="btn btn-secondary" href="https://zenoffice.neocities.org/#teenused">Vaata teenuseid</a>
       </div>
     </section>
   </header>
@@ -363,13 +386,10 @@
         <h2>Võta ühendust</h2>
         <p>Kirjuta meile, et broneerida shiatsu aeg, küsida arvutiabi või rääkida muusika projektist.</p>
       </div>
-      <form class="contact-form">
-        <input type="text" placeholder="Sinu nimi">
-        <input type="email" placeholder="E-posti aadress">
-        <textarea rows="5" placeholder="Sõnum"></textarea>
-        <button class="btn btn-primary" type="submit">Saada päring</button>
-      </form>
+      <div class="contact-form">
+        <p>E-post: <a href="mailto:zenofficestudio@gmail.com">zenofficestudio@gmail.com</a></p>
+      </div>
     </section>
   </main>
-</body>
-</html>
+
+</body></html>

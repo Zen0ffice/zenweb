@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>禅オフィス | 音楽</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Noto Serif JP', 'Zen Old Mincho', serif;
+      background: #0a0e1a;
+      color: #c8d8e8;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,220,255,0.015) 2px, rgba(200,220,255,0.015) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(200,220,255,0.01) 3px, rgba(200,220,255,0.01) 5px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 10px 20px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .jpattern-top {
+      height: 16px;
+      background: radial-gradient(circle at 8px 8px, #3a7ab5 3px, transparent 4px);
+      background-size: 16px 16px;
+      opacity: 0.5;
+      margin-bottom: 5px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 15px 10px;
+      border: 3px double #1a3a6b;
+      background: linear-gradient(180deg, rgba(5,10,20,0.95), rgba(3,8,15,0.95));
+      margin-bottom: 15px;
+    }
+
+    .header h1 {
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 32px;
+      margin: 5px 0;
+      color: #d0e0f0;
+      text-shadow: 2px 2px 0 #00204a, 0 0 40px rgba(26,58,107,0.3);
+      letter-spacing: 10px;
+    }
+
+    .header .sub {
+      font-size: 13px;
+      color: #6a8ab5;
+      letter-spacing: 3px;
+    }
+
+    .nav {
+      text-align: center;
+      margin: 12px 0;
+      padding: 10px 8px;
+      border-top: 2px solid #2a3a5a;
+      border-bottom: 2px solid #2a3a5a;
+      background: rgba(3,8,15,0.6);
+    }
+
+    .nav a:not(.nav-btn):not(.flag-btn) {
+      display: inline-block;
+      color: #8ab5d4;
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 2px;
+      margin: 3px 8px;
+      padding: 3px 6px;
+      border: 1px solid transparent;
+      transition: 0.2s;
+    }
+
+    .nav a:hover {
+      color: #d0e0f0;
+      border-color: #1a3a6b;
+      background: rgba(26,58,107,0.2);
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      font-size: 1.1rem;
+      line-height: 1;
+      border-radius: 999px;
+      transition: 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      border: 2px solid rgba(26,58,107,0.3);
+      background: rgba(26,58,107,0.1);
+      color: #8ab5d4;
+      vertical-align: middle;
+      margin: 0 3px;
+    }
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(26,58,107,0.25);
+      border-color: #1a3a6b;
+      color: #d0e0f0;
+    }
+    .flag-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      font-size: 1.2rem;
+      line-height: 1;
+      border-radius: 999px;
+      transition: 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      border: 2px solid rgba(26,58,107,0.3);
+      background: rgba(26,58,107,0.1);
+      vertical-align: middle;
+      margin: 0 3px;
+    }
+    .flag-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(26,58,107,0.25);
+      border-color: #1a3a6b;
+    }
+
+    .gif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 8px 0;
+    }
+
+    .gif-inline {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 4px;
+      image-rendering: pixelated;
+    }
+
+    .player-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 1rem;
+      align-items: start;
+      margin-top: 1rem;
+    }
+
+    .album-box {
+      border: 2px solid #2a3a5a;
+      background: rgba(5,8,15,0.85);
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .album-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0a1020 0%, #080a18 100%);
+      color: #2a3a5a;
+      font-size: 4rem;
+    }
+
+    .controls-box {
+      border: 2px solid #2a3a5a;
+      background: rgba(5,8,15,0.85);
+      padding: 1.5rem;
+    }
+
+    .track-name {
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 1.2rem;
+      margin: 0 0 0.2rem;
+      color: #d0e0f0;
+    }
+
+    .track-artist {
+      color: #6a8ab5;
+      font-size: 0.9rem;
+      margin: 0 0 1rem;
+    }
+
+    .progress-box {
+      margin-bottom: 1.2rem;
+    }
+
+    .prog-bar {
+      width: 100%;
+      height: 6px;
+      background: #0a1020;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prog-fill {
+      height: 100%;
+      background: #1a3a6b;
+      width: 0%;
+      transition: width 0.1s linear;
+    }
+
+    .time-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #5a7a9a;
+      margin-top: 0.3rem;
+    }
+
+    .action-row {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      justify-content: center;
+      margin-bottom: 0.8rem;
+    }
+
+    .ctrl-btn {
+      background: none;
+      border: 1px solid #1a2a3a;
+      cursor: pointer;
+      font-size: 1.3rem;
+      color: #8ab5d4;
+      padding: 0.4rem 0.6rem;
+      line-height: 1;
+      transition: 0.15s;
+      font-family: serif;
+    }
+
+    .ctrl-btn:hover {
+      background: rgba(26,58,107,0.2);
+      border-color: #1a3a6b;
+      color: #d0e0f0;
+    }
+
+    .ctrl-btn-main {
+      font-size: 1.6rem;
+      padding: 0.5rem 1rem;
+      background: #1a3a6b;
+      color: #d0e0f0;
+      border-color: #1a3a6b;
+    }
+
+    .ctrl-btn-main:hover {
+      background: #3a7ab5;
+    }
+
+    .volume-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: #5a7a9a;
+    }
+
+    .vol-bar {
+      width: 100px;
+      height: 5px;
+      background: #0a1020;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .vol-fill {
+      height: 100%;
+      background: #1a3a6b;
+      width: 70%;
+    }
+
+    .playlist-box {
+      border: 2px solid #2a3a5a;
+      background: rgba(5,8,15,0.85);
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+
+    .playlist-title {
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 1rem;
+      margin: 0 0 0.8rem;
+      color: #d0e0f0;
+      text-align: center;
+    }
+
+    .pl-item {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.55rem 0.7rem;
+      cursor: pointer;
+      transition: 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .pl-item:hover {
+      background: rgba(26,58,107,0.1);
+      border-color: #1a2a3a;
+    }
+
+    .pl-item.active {
+      background: rgba(26,58,107,0.15);
+      border-color: #1a3a6b;
+    }
+
+    .pl-item .thumb {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      border: 1px solid #1a2a3a;
+    }
+
+    .pl-item .meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .pl-item .meta .name {
+      font-weight: 500;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pl-item .meta .artist {
+      font-size: 0.7rem;
+      color: #5a7a9a;
+    }
+
+    .pl-item .dur {
+      font-size: 0.7rem;
+      color: #5a7a9a;
+      flex-shrink: 0;
+    }
+
+    .pl-item .indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #3a7ab5;
+      flex-shrink: 0;
+      opacity: 0;
+    }
+
+    .pl-item.active .indicator { opacity: 1; }
+
+    .footer {
+      text-align: center;
+      padding: 15px 10px;
+      margin-top: 25px;
+      border-top: 2px solid #1a2a3a;
+      font-size: 11px;
+      color: #4a6a8a;
+      letter-spacing: 2px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border: 1px solid #1a2a3a;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #5a7a9a;
+      background: rgba(3,5,10,0.4);
+    }
+
+    @media (max-width: 700px) {
+      .player-wrap { grid-template-columns: 1fr; }
+      .header h1 { font-size: 24px; letter-spacing: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="jpattern-top"></div>
+
+  <div class="header">
+    <h1>禅 音楽</h1>
+    <p class="sub">— ZenOffice Music Player —</p>
+  </div>
+
+  <div class="nav">
+    <a href="zork2.html">【 ZEN HOME 】</a>
+    <a href="zorkmusic2.html">【 禅 音楽 】</a>
+    <a href="zenplay2.html">【 禅 PLAY 】</a>
+    <a href="zenhaiku2.html">【 禅 HAIKU 】</a>
+    <a href="zorkshooter2.html">【 禅 SHOOTER 】</a>
+    <a class="nav-btn" href="zorkmusic.html" title="ZorkMusic (hele)">☀</a>
+    <a class="flag-btn" href="music2.html" title="Music">🇪🇪</a>
+  </div>
+
+  <div class="player-wrap">
+    <div class="album-box" id="albumArt">
+      <div class="album-placeholder" id="albumPlaceholder">♪</div>
+    </div>
+
+    <div>
+      <div class="controls-box">
+        <p class="track-name" id="trackName">—</p>
+        <p class="track-artist" id="trackArtist">—</p>
+
+        <div class="progress-box">
+          <div class="prog-bar" id="progressBar">
+            <div class="prog-fill" id="progressFill"></div>
+          </div>
+          <div class="time-row">
+            <span id="timeCurrent">0:00</span>
+            <span id="timeTotal">0:00</span>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button class="ctrl-btn" id="prevBtn">⏮</button>
+          <button class="ctrl-btn ctrl-btn-main" id="playBtn">▶</button>
+          <button class="ctrl-btn" id="nextBtn">⏭</button>
+        </div>
+
+        <div class="volume-row">
+          <span>♫</span>
+          <div class="vol-bar" id="volumeBar">
+            <div class="vol-fill" id="volumeFill"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="playlist-box">
+        <p class="playlist-title">〜 演奏曲目 〜</p>
+        <div id="playlistItems"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gif-row" style="margin:15px 0">
+    <img class="gif-inline" src="https://blob.gifcities.org/gifcities/FACUTSNQ3ALNV5NR323A3A2XBKVE5S2J.gif" alt="Made with" width="88" height="31">
+    <img class="gif-inline" src="https://blob.gifcities.org/gifcities/NHYM2V3DQF6T6EPECTLQ66AIAHSRT7X5.gif" alt="Button" width="88" height="31">
+    <img class="gif-inline" src="https://blob.gifcities.org/gifcities/3JAD54YMBBV4DWDXQRHUCXMRTTYEM3IQ.gif" alt="Button" width="88" height="31">
+  </div>
+
+  <div class="footer">
+    <div class="gif-row">
+      <span class="badge">禪</span>
+      <span class="badge">音楽</span>
+      <span class="badge">静寂</span>
+    </div>
+    <p style="margin:8px 0 0">ZenOffice 音楽 — 心を込めて</p>
+  </div>
+
+  <div class="jpattern-top" style="margin-top:5px"></div>
+</div>
+
+<script>
+  const tracks = [
+    { name: '暁の鐘', artist: 'ZenOffice', dur: '3:24', color: '#0a1020', freq: 261.63 },
+    { name: '林道', artist: 'ZenOffice', dur: '4:12', color: '#1a2a10', freq: 293.66 },
+    { name: '雨滴', artist: 'ZenOffice', dur: '5:08', color: '#101a2a', freq: 329.63 },
+    { name: '海風', artist: 'ZenOffice', dur: '3:46', color: '#1a102a', freq: 349.23 },
+    { name: '日本庭園', artist: 'ZenOffice', dur: '4:35', color: '#1a2a08', freq: 392.00 },
+    { name: '夕暮れ', artist: 'ZenOffice', dur: '3:58', color: '#2a1408', freq: 440.00 },
+    { name: '星空', artist: 'ZenOffice', dur: '5:22', color: '#080e2a', freq: 493.88 },
+    { name: '静寂', artist: 'ZenOffice', dur: '3:30', color: '#082a18', freq: 523.25 },
+  ];
+
+  let currentIndex = 0, isPlaying = false, audioCtx = null, oscillator = null, gainNode = null;
+  let startTime = 0, pausedAt = 0, animFrame = null, volume = 0.7;
+
+  const $ = id => document.getElementById(id);
+  const playBtn = $('playBtn'), prevBtn = $('prevBtn'), nextBtn = $('nextBtn');
+  const trackName = $('trackName'), trackArtist = $('trackArtist');
+  const progressFill = $('progressFill'), progressBar = $('progressBar');
+  const timeCurrent = $('timeCurrent'), timeTotal = $('timeTotal');
+  const volumeBar = $('volumeBar'), volumeFill = $('volumeFill');
+  const albumPlaceholder = $('albumPlaceholder'), playlistItems = $('playlistItems');
+
+  function fmt(sec) {
+    const m = Math.floor(sec / 60), s = Math.floor(sec % 60);
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function parseDur(d) { const p = d.split(':'); return +p[0]*60 + +p[1]; }
+
+  function render() {
+    playlistItems.innerHTML = '';
+    tracks.forEach((t, i) => {
+      const d = document.createElement('div');
+      d.className = 'pl-item' + (i === currentIndex ? ' active' : '');
+      d.innerHTML =
+        '<div class="thumb" style="background:' + t.color + '">♪</div>' +
+        '<div class="meta"><div class="name">' + t.name + '</div><div class="artist">' + t.artist + '</div></div>' +
+        '<span class="dur">' + t.dur + '</span><span class="indicator"></span>';
+      d.addEventListener('click', () => selectTrack(i));
+      playlistItems.appendChild(d);
+    });
+  }
+
+  function selectTrack(idx) {
+    if (idx === currentIndex && isPlaying) return;
+    stopOsc();
+    currentIndex = idx;
+    const t = tracks[currentIndex];
+    trackName.textContent = t.name;
+    trackArtist.textContent = t.artist;
+    albumPlaceholder.style.background = 'linear-gradient(135deg, ' + t.color + ', ' + t.color + '88)';
+    pausedAt = 0;
+    progressFill.style.width = '0%';
+    timeCurrent.textContent = '0:00';
+    timeTotal.textContent = t.dur;
+    isPlaying = false;
+    playBtn.textContent = '▶';
+    document.querySelectorAll('.pl-item').forEach((el, i) => el.classList.toggle('active', i === currentIndex));
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    playOsc();
+  }
+
+  function playOsc() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const t = tracks[currentIndex];
+    oscillator = audioCtx.createOscillator();
+    gainNode = audioCtx.createGain();
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(t.freq, audioCtx.currentTime);
+    gainNode.gain.setValueAtTime(volume * 0.18, audioCtx.currentTime);
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    oscillator.start();
+    startTime = audioCtx.currentTime - pausedAt;
+    isPlaying = true;
+    playBtn.textContent = '⏸';
+    updateProgress();
+  }
+
+  function stopOsc() {
+    if (oscillator) { try { oscillator.stop(); } catch(e) {} oscillator.disconnect(); oscillator = null; }
+    if (gainNode) { gainNode.disconnect(); gainNode = null; }
+    if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+    isPlaying = false;
+    playBtn.textContent = '▶';
+  }
+
+  function togglePlay() {
+    if (!audioCtx) { selectTrack(currentIndex); return; }
+    if (isPlaying) { pausedAt = audioCtx.currentTime - startTime; stopOsc(); }
+    else { playOsc(); }
+  }
+
+  function updateProgress() {
+    if (!isPlaying || !audioCtx || !oscillator) return;
+    const elapsed = audioCtx.currentTime - startTime;
+    const total = parseDur(tracks[currentIndex].dur);
+    const pct = Math.min((elapsed / total) * 100, 100);
+    progressFill.style.width = pct + '%';
+    timeCurrent.textContent = fmt(Math.min(elapsed, total));
+    if (elapsed >= total) { nextTrack(); return; }
+    animFrame = requestAnimationFrame(updateProgress);
+  }
+
+  function nextTrack() { stopOsc(); pausedAt = 0; currentIndex = (currentIndex + 1) % tracks.length; const t = tracks[currentIndex]; trackName.textContent = t.name; trackArtist.textContent = t.artist; albumPlaceholder.style.background = 'linear-gradient(135deg, ' + t.color + ', ' + t.color + '88)'; timeTotal.textContent = t.dur; timeCurrent.textContent = '0:00'; progressFill.style.width = '0%'; document.querySelectorAll('.pl-item').forEach((el, i) => el.classList.toggle('active', i === currentIndex)); playOsc(); }
+  function prevTrack() { stopOsc(); pausedAt = 0; currentIndex = (currentIndex - 1 + tracks.length) % tracks.length; const t = tracks[currentIndex]; trackName.textContent = t.name; trackArtist.textContent = t.artist; albumPlaceholder.style.background = 'linear-gradient(135deg, ' + t.color + ', ' + t.color + '88)'; timeTotal.textContent = t.dur; timeCurrent.textContent = '0:00'; progressFill.style.width = '0%'; document.querySelectorAll('.pl-item').forEach((el, i) => el.classList.toggle('active', i === currentIndex)); playOsc(); }
+
+  progressBar.addEventListener('click', (e) => {
+    if (!audioCtx || !isPlaying) return;
+    const rect = progressBar.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    const newTime = pct * parseDur(tracks[currentIndex].dur);
+    stopOsc(); pausedAt = newTime; playOsc();
+  });
+
+  volumeBar.addEventListener('click', (e) => {
+    const rect = volumeBar.getBoundingClientRect();
+    volume = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    volumeFill.style.width = (volume * 100) + '%';
+    if (gainNode) gainNode.gain.setValueAtTime(volume * 0.18, audioCtx.currentTime);
+  });
+
+  playBtn.addEventListener('click', togglePlay);
+  nextBtn.addEventListener('click', nextTrack);
+  prevBtn.addEventListener('click', prevTrack);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+    if (e.code === 'ArrowRight') nextTrack();
+    if (e.code === 'ArrowLeft') prevTrack();
+  });
+
+  volumeFill.style.width = (volume * 100) + '%';
+  render();
+  selectTrack(0);
+</script>
+
+</body>
+</html>

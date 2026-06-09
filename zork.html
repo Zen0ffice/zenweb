@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>禅オフィス | ZenOffice</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Zen+Old+Mincho:wght@400;700&display=swap');
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Noto Serif JP', 'Zen Old Mincho', serif;
+      background: #1a1108;
+      color: #e8dcc8;
+      min-height: 100vh;
+    }
+
+    /* ——— WASHI PAPER TEXTURE OVERLAY ——— */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,240,0.015) 2px, rgba(255,255,240,0.015) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(255,255,240,0.01) 3px, rgba(255,255,240,0.01) 5px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ——— FALLING CHERRY BLOSSOMS ——— */
+    .sakura {
+      position: fixed;
+      top: -30px;
+      pointer-events: none;
+      z-index: 9998;
+      font-size: 18px;
+      color: rgba(255, 140, 160, 0.6);
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg) translateX(0); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(720deg) translateX(80px); opacity: 0; }
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 10px 20px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ——— JAPANESE PATTERN BORDER (Seigaiha-inspired) ——— */
+    .jpattern-top {
+      height: 16px;
+      background: radial-gradient(circle at 8px 8px, #c0392b 3px, transparent 4px);
+      background-size: 16px 16px;
+      opacity: 0.5;
+      margin-bottom: 5px;
+    }
+    .jpattern-bottom {
+      height: 16px;
+      background: radial-gradient(circle at 8px 8px, #c0392b 3px, transparent 4px);
+      background-size: 16px 16px;
+      opacity: 0.5;
+      margin-top: 5px;
+    }
+
+    /* ——— HEADER ——— */
+    .gif-inline {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 4px;
+      image-rendering: pixelated;
+    }
+    .gif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+
+    .header {
+      text-align: center;
+      padding: 20px 10px;
+      border: 3px double #8b0000;
+      background: linear-gradient(180deg, rgba(30,15,5,0.95), rgba(20,10,5,0.95));
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .header::after {
+      content: '☩';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 20px;
+      color: #8b0000;
+    }
+
+    .header .mon {
+      font-size: 14px;
+      color: #8b0000;
+      letter-spacing: 8px;
+      margin-bottom: 8px;
+    }
+
+    .header h1 {
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 42px;
+      margin: 5px 0;
+      color: #f5e6d3;
+      text-shadow:
+        2px 2px 0 #4a0000,
+        0 0 40px rgba(139,0,0,0.3);
+      letter-spacing: 12px;
+    }
+
+    .header h1 .jp {
+      color: #c0392b;
+    }
+
+    .header .sub {
+      font-size: 15px;
+      color: #b8956a;
+      letter-spacing: 4px;
+      margin: 8px 0 0;
+    }
+
+    .header .sub span {
+      display: inline-block;
+      margin: 0 10px;
+    }
+
+    /* ——— JAPANESE NAV ——— */
+    .nav {
+      text-align: center;
+      margin: 15px 0;
+      padding: 12px 8px;
+      border-top: 2px solid #5a3d2b;
+      border-bottom: 2px solid #5a3d2b;
+      background: rgba(20,10,5,0.6);
+    }
+
+    .nav a:not(.nav-btn):not(.flag-btn) {
+      display: inline-block;
+      color: #d4a574;
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 2px;
+      margin: 4px 10px;
+      padding: 4px 8px;
+      border: 1px solid transparent;
+      transition: 0.2s;
+    }
+
+    .nav a:hover {
+      color: #f5e6d3;
+      border-color: #8b0000;
+      background: rgba(139,0,0,0.2);
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      font-size: 1.2rem;
+      line-height: 1;
+      border-radius: 999px;
+      transition: 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      border: 2px solid rgba(139,0,0,0.3);
+      background: rgba(139,0,0,0.1);
+      color: #d4a574;
+      vertical-align: middle;
+      margin: 0 4px;
+    }
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(139,0,0,0.25);
+      border-color: #8b0000;
+      color: #f5e6d3;
+    }
+    .flag-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      font-size: 1.3rem;
+      line-height: 1;
+      border-radius: 999px;
+      transition: 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      border: 2px solid rgba(139,0,0,0.3);
+      background: rgba(139,0,0,0.1);
+      vertical-align: middle;
+      margin: 0 4px;
+    }
+    .flag-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(139,0,0,0.25);
+      border-color: #8b0000;
+    }
+
+    /* ——— MARQUEE with Japanese border ——— */
+    .marquee-area {
+      margin: 20px 0;
+      padding: 12px;
+      border: 1px solid #5a3d2b;
+      background: rgba(10,5,3,0.7);
+      position: relative;
+    }
+
+    .marquee-area::before,
+    .marquee-area::after {
+      content: '◆';
+      position: absolute;
+      color: #8b0000;
+      font-size: 12px;
+    }
+    .marquee-area::before { top: -8px; left: 20px; }
+    .marquee-area::after { bottom: -8px; right: 20px; }
+
+    /* —── SECTIONS ——— */
+    .section {
+      margin: 35px 0;
+      padding: 20px;
+      border: 2px solid #5a3d2b;
+      background: rgba(15,8,4,0.85);
+      position: relative;
+    }
+
+    .section::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px; right: -1px; bottom: -1px;
+      border: 1px solid #3a2518;
+      pointer-events: none;
+    }
+
+    .section-title {
+      text-align: center;
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 22px;
+      color: #c0392b;
+      margin: -34px 0 20px;
+      letter-spacing: 6px;
+    }
+
+    .section-title span {
+      background: #1a1108;
+      padding: 0 18px;
+    }
+
+    .section p {
+      font-size: 15px;
+      line-height: 2;
+      color: #d4c5b0;
+      margin: 12px 0;
+      text-align: justify;
+    }
+
+    .section a {
+      color: #d4a574;
+      text-decoration: underline;
+    }
+    .section a:hover { color: #f5e6d3; }
+
+    /* ——— KAMI / SPIRIT DECORATIONS ——— */
+    .kami-divider {
+      text-align: center;
+      font-size: 20px;
+      color: #8b0000;
+      letter-spacing: 12px;
+      margin: 8px 0;
+      opacity: 0.5;
+    }
+
+    /* ——— SERVICE CARDS (Japanese emaki style) ——— */
+    .card-row {
+      display: flex;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .card {
+      flex: 1;
+      padding: 18px 14px;
+      border: 2px solid #3a2518;
+      background: linear-gradient(180deg, rgba(25,15,8,0.95), rgba(15,8,4,0.95));
+      text-align: center;
+      position: relative;
+    }
+
+    .card::before {
+      content: '※';
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #8b0000;
+      font-size: 16px;
+      background: #1a1108;
+      padding: 0 8px;
+    }
+
+    .card .icon {
+      display: block;
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: #c0392b;
+    }
+
+    .card h3 {
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 18px;
+      color: #f5e6d3;
+      margin: 0 0 10px;
+      letter-spacing: 2px;
+    }
+
+    .card h3::after {
+      content: '';
+      display: block;
+      width: 30px;
+      height: 1px;
+      background: #8b0000;
+      margin: 8px auto 0;
+    }
+
+    .card p {
+      font-size: 13px;
+      line-height: 1.8;
+      color: #b8956a;
+      margin: 0;
+      text-align: center;
+    }
+
+    .card .seal {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 2px 12px;
+      border: 2px solid #8b0000;
+      color: #c0392b;
+      font-size: 11px;
+      letter-spacing: 2px;
+      border-radius: 50% / 4px;
+      transform: rotate(-3deg);
+    }
+
+    /* ——— QUOTE BOX (Zen calligraphy style) ——— */
+    .quote-box {
+      text-align: center;
+      padding: 25px 15px;
+      border: 3px double #8b0000;
+      background: rgba(10,5,3,0.7);
+      margin: 20px 0;
+      position: relative;
+    }
+
+    .quote-box::before { content: '「'; position: absolute; top: 5px; left: 10px; font-size: 28px; color: #5a3d2b; }
+    .quote-box::after { content: '」'; position: absolute; bottom: 5px; right: 10px; font-size: 28px; color: #5a3d2b; }
+
+    .quote-box p {
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 24px;
+      color: #f5e6d3;
+      margin: 0;
+      letter-spacing: 6px;
+      line-height: 1.8;
+    }
+
+    .quote-box .small {
+      font-size: 14px;
+      color: #b8956a;
+      margin-top: 10px;
+      letter-spacing: 4px;
+    }
+
+    /* ——— CONTACT ——— */
+    .contact-outer {
+      text-align: center;
+      padding: 20px;
+      border: 2px solid #5a3d2b;
+      margin: 20px 0;
+      background: rgba(15,8,4,0.85);
+    }
+
+    .contact-outer .email {
+      display: inline-block;
+      padding: 12px 30px;
+      border: 2px solid #8b0000;
+      color: #d4a574;
+      font-size: 16px;
+      letter-spacing: 2px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .contact-outer .email:hover {
+      background: rgba(139,0,0,0.15);
+      color: #f5e6d3;
+      border-color: #c0392b;
+    }
+
+    /* ——— HANKO / STAMP ——— */
+    .hanko {
+      display: inline-block;
+      padding: 6px 16px;
+      border: 3px solid #8b0000;
+      color: #c0392b;
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 14px;
+      letter-spacing: 2px;
+      transform: rotate(-5deg);
+      margin: 5px;
+      background: rgba(139,0,0,0.05);
+    }
+
+    /* ——— COUNTER ——— */
+    .counter-area {
+      text-align: center;
+      margin: 20px 0;
+      padding: 15px;
+      border: 1px solid #3a2518;
+      background: rgba(5,3,2,0.5);
+    }
+
+    .counter-area .num {
+      font-family: 'Courier New', monospace;
+      font-size: 28px;
+      color: #c0392b;
+      letter-spacing: 6px;
+    }
+
+    .counter-area .label {
+      font-size: 11px;
+      color: #7a6a58;
+      letter-spacing: 3px;
+    }
+
+    /* ——— FOOTER ——— */
+    .footer {
+      text-align: center;
+      padding: 20px 10px;
+      margin-top: 30px;
+      border-top: 2px solid #3a2518;
+      font-size: 12px;
+      color: #6a5a48;
+      letter-spacing: 2px;
+    }
+
+    .footer-badges {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border: 1px solid #3a2518;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #7a6a58;
+      background: rgba(10,5,3,0.4);
+    }
+
+    /* ——— RESPONSIVE ——— */
+    @media (max-width: 700px) {
+      .card-row { flex-direction: column; }
+      .header h1 { font-size: 28px; letter-spacing: 6px; }
+      .nav a { display: inline-block; margin: 3px 6px; font-size: 12px; }
+      .section-title { font-size: 18px; margin-top: -28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ——— FALLING SAKURA ——— -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const emojis = ['🌸','🌺','✿','❀','🪷'];
+    for (let i = 0; i < 18; i++) {
+      const el = document.createElement('div');
+      el.className = 'sakura';
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.left = Math.random() * 100 + '%';
+      el.style.fontSize = (12 + Math.random() * 16) + 'px';
+      el.style.animationDuration = (8 + Math.random() * 12) + 's';
+      el.style.animationDelay = (Math.random() * 15) + 's';
+      el.style.opacity = 0.3 + Math.random() * 0.4;
+      document.body.appendChild(el);
+    }
+  });
+</script>
+
+<div class="container">
+
+  <!-- ——— TOP PATTERN ——— -->
+  <div class="jpattern-top"></div>
+
+  <!-- ===== HEADER ===== -->
+  <div class="header">
+    <div class="gif-row">
+      <img class="gif-inline" src="https://blob.gifcities.org/gifcities/4ERPKWUNBSEM7OYR5HHDA4JSSE4GV5IT.gif" alt="Japan" width="64" height="64">
+      <img class="gif-inline" src="https://blob.gifcities.org/gifcities/NR6C7GNL62LXMPEM2A566PXME2DHPTJ5.gif" alt="Sakura" width="70" height="70">
+      <img class="gif-inline" src="https://blob.gifcities.org/gifcities/4ERPKWUNBSEM7OYR5HHDA4JSSE4GV5IT.gif" alt="Japan" width="64" height="64">
+    </div>
+    <div class="mon">※ ※ ※ ※ ※</div>
+    <h1><span class="jp">禅</span>OFFICE</h1>
+    <div style="font-size:13px;color:#8b0000;letter-spacing:4px;margin:2px 0">— ZenOffice —</div>
+    <p class="sub">
+      <span>◈</span>
+      シーツー・マッサージ
+      <span>◈</span>
+      コンピュータ支援
+      <span>◈</span>
+      音楽制作
+      <span>◈</span>
+    </p>
+    <p style="font-size:12px;color:#7a6a58;letter-spacing:2px;margin:6px 0 0">
+      Shiatsu massaaž · Arvutiabi · Muusika produktsioon
+    </p>
+  </div>
+
+  <!-- ===== NAV ===== -->
+  <div class="nav">
+    <a href="zork.html">【 禅 ZORK 】</a>
+    <a href="zorkmusic.html">【 禅 音楽 】</a>
+    <a href="zenplay.html">【 禅 PLAY 】</a>
+    <a href="zenhaiku.html">【 禅 HAIKU 】</a>
+    <a href="zorkshooter.html">【 禅 SHOOTER 】</a>
+    <a class="nav-btn" href="zork2.html" title="Zork2 (tume)">☽</a>
+    <a class="flag-btn" href="index.html" title="ZenOffice">🇪🇪</a>
+  </div>
+
+  <div class="gif-row" style="margin:5px 0">
+    <img class="gif-inline" src="https://blob.gifcities.org/gifcities/5X2MBWLYTHAEGGZWZYNGLIOPRFOBPYZ7.gif" alt="Nozomi" width="68" height="50">
+    <img class="gif-inline" src="https://blob.gifcities.org/gifcities/S6GOM7RR3SEVWXR6XYABVKFP3F4S4DHY.gif" alt="Japan" width="68" height="50">
+    <img class="gif-inline" src="https://blob.gifcities.org/gifcities/P2WB4OXAK2S7O6ZMQJ3ZXJLL5D7CJATD.gif" alt="Japan" width="68" height="50">
+  </div>
+
+  <!-- ===== MARQUEE ===== -->
+  <div class="marquee-area">
+    <marquee behavior="scroll" direction="right" scrollamount="3" onmouseover="this.stop()" onmouseout="this.start()">
+      <span style="color:#d4a574;letter-spacing:3px">
+        ようこそ ZenOffice へ 〜 心と体、そして技術の調和 〜
+      </span>
+      <span style="color:#5a3d2b;margin:0 20px">◆</span>
+      <span style="color:#b8956a;letter-spacing:3px">
+        Tasakaal keha, tehnika ja loovuse vahel
+      </span>
+      <span style="color:#5a3d2b;margin:0 20px">◆</span>
+      <span style="color:#d4a574;letter-spacing:3px">
+        静けさの中に力がある
+      </span>
+    </marquee>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <div class="section" style="text-align:center">
+    <p class="section-title"><span>〜 はじめまして 〜</span></p>
+
+    <div class="kami-divider">─ ◆ ─ ◆ ─</div>
+
+    <p style="font-size:18px;color:#f5e6d3;font-weight:600;text-align:center;letter-spacing:4px">
+      心静かに、確かな一歩を。
+    </p>
+    <p style="text-align:center">
+      ZenOffice ühendab vaikse, puhta Jaapani esteetika ning praktilise igapäevase abi.<br>
+      Aitame sul lõõgastuda, taastuda, digimured lahendada ja muusikat luua.
+    </p>
+
+    <div class="kami-divider">─ ◆ ─ ◆ ─</div>
+
+    <p style="font-size:14px;color:#b8956a;text-align:center;letter-spacing:2px">
+      Tasakaal keha, tehnika ja loovuse vahel.
+    </p>
+
+    <div class="gif-row" style="margin:10px 0">
+      <img class="gif-inline" src="https://blob.gifcities.org/gifcities/C3WA2WY2KGXWH2ET3QLA7GUYPCDPPKWU.gif" alt="Welcome" width="257" height="96">
+    </div>
+
+    <div style="margin-top:15px">
+      <a href="#kontakt" style="display:inline-block;padding:12px 36px;background:transparent;color:#d4a574;border:2px solid #8b0000;font-size:16px;letter-spacing:4px;text-decoration:none;transition:0.3s;font-family:'Noto Serif JP',serif"
+         onmouseover="this.style.background='rgba(139,0,0,0.2)';this.style.color='#f5e6d3'"
+         onmouseout="this.style.background='transparent';this.style.color='#d4a574'">
+        予約する ✦ BRONEERI
+      </a>
+    </div>
+  </div>
+
+  <div class="kami-divider">※ ※ ※ ※ ※</div>
+
+  <!-- ===== TEENUSED ===== -->
+  <div class="section" id="teenused">
+    <p class="section-title"><span>〜 サービス 〜</span></p>
+    <p style="text-align:center;color:#b8956a;font-size:13px;letter-spacing:2px;margin:0 0 15px">
+      Selge valik, rahulik kogemus
+    </p>
+
+    <div class="card-row">
+      <div class="card">
+        <span class="icon">◯</span>
+        <h3>Shiatsu massaaž</h3>
+        <p>Õrn, kuid sügav keha tasakaalustav massaaž, mis aitab vähendada pinget ja taastada hea enesetunde.</p>
+        <span class="seal">推奨</span>
+      </div>
+      <div class="card">
+        <span class="icon">▣</span>
+        <h3>Arvutiabi</h3>
+        <p>Abi seadistuste, tarkvara, interneti ja igapäevaste tehniliste muredega kodus või kontoris.</p>
+      </div>
+      <div class="card">
+        <span class="icon">♪</span>
+        <h3>Muusika prod.</h3>
+        <p>Helitöötlus, miks, masterdamine ja muusika tootmine professionaalsel tasemel. Kõik žanrid.</p>
+        <span class="seal">新</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="kami-divider">※ ※ ※ ※ ※</div>
+
+  <!-- ===== MEIST ===== -->
+  <div class="section" id="meist">
+    <p class="section-title"><span>〜 私たちについて 〜</span></p>
+
+    <div class="quote-box">
+      <p>静けさの中に力がある</p>
+      <div class="small">— Vähem müra. Rohkem selgust. —</div>
+    </div>
+
+    <p>
+      <span style="color:#8b0000">禪</span> ZenOffice on loodud inimestele, kes hindavad lihtsust, kvaliteeti ja tähelepanu detailidele. Must-valge visuaal, palju õhku ja Jaapani inspireeritud vormid loovad elegantse ning professionaalse mulje.
+    </p>
+
+    <div class="gif-row" style="margin:15px 0">
+      <img class="gif-inline" src="https://blob.gifcities.org/gifcities/OKJB3D3QMSNUUBT7OQVHUM2M5NG6OFMG.gif" alt="Tokyo at night" width="197" height="148">
+      <img class="gif-inline" src="https://blob.gifcities.org/gifcities/H6IBZ624GMAK7E33J4UWE3QFS4LVIMZH.gif" alt="Sakura" width="314" height="177">
+    </div>
+
+    <div style="text-align:center;margin:15px 0">
+      <span class="hanko">禅</span>
+      <span class="hanko">和</span>
+      <span class="hanko">静</span>
+    </div>
+  </div>
+
+  <div class="kami-divider">※ ※ ※ ※ ※</div>
+
+  <!-- ===== KONTAKT ===== -->
+  <div class="section" id="kontakt">
+    <p class="section-title"><span>〜 お問い合わせ 〜</span></p>
+    <p style="text-align:center;font-size:15px;letter-spacing:2px">
+      Võta ühendust — broneeri shiatsu aeg, küsi arvutiabi või räägi muusika projektist.
+    </p>
+
+    <div class="gif-row">
+      <img class="gif-inline" src="https://blob.gifcities.org/gifcities/YLGTY6TI7OVRDF3DVCWJ4BKQ3WMTEUDV.gif" alt="Japan" width="126" height="95">
+      <img class="gif-inline" src="https://blob.gifcities.org/gifcities/RPWAD3JOGSFEIVKF6BQXYSAFDAJNO7M2.gif" alt="Japan" width="126" height="95">
+    </div>
+
+    <div class="contact-outer">
+      <a href="mailto:zenofficestudio@gmail.com" class="email">
+        ✦ zenofficestudio@gmail.com ✦
+      </a>
+    </div>
+
+    <!-- ——— VISITOR COUNTER (Japanese style) ——— -->
+    <div class="counter-area">
+      <div class="label">〜 訪問者数 〜</div>
+      <div class="num">
+        <span id="counter1">0</span>
+        <span style="color:#5a3d2b">,</span>
+        <span id="counter2">0</span>
+        <span style="color:#5a3d2b">,</span>
+        <span id="counter3">0</span>
+      </div>
+      <div class="label">VISITORS</div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <div class="footer">
+    <div class="gif-row">
+      <img class="gif-inline" src="https://blob.gifcities.org/gifcities/FACUTSNQ3ALNV5NR323A3A2XBKVE5S2J.gif" alt="Made with" width="88" height="31">
+      <img class="gif-inline" src="https://blob.gifcities.org/gifcities/3JAD54YMBBV4DWDXQRHUCXMRTTYEM3IQ.gif" alt="Button" width="88" height="31">
+      <img class="gif-inline" src="https://blob.gifcities.org/gifcities/NHYM2V3DQF6T6EPECTLQ66AIAHSRT7X5.gif" alt="Button" width="88" height="31">
+      <img class="gif-inline" src="https://blob.gifcities.org/gifcities/K4B45NDAOVV5PDYLIT7QTQ2TEFGLS7F5.gif" alt="Button" width="88" height="31">
+      <img class="gif-inline" src="https://blob.gifcities.org/gifcities/4O2475K6LPK37ZMP4PTMA5X5TWQQNQTN.gif" alt="Tokyo" width="88" height="31">
+    </div>
+
+    <p style="letter-spacing:4px;margin:8px 0">
+      禅 Office — ZenOffice
+    </p>
+
+    <p style="font-size:11px;color:#5a4a38;margin:5px 0">
+      Shiatsu massaaž · Arvutiabi · Muusika produktsioon
+    </p>
+
+    <p style="font-size:10px;color:#4a3a28;margin:5px 0">
+      © 2024 ZenOffice — Kõik õigused kaitstud
+    </p>
+
+    <p style="font-size:9px;color:#3a2a18;margin:8px 0;letter-spacing:1px">
+      このサイトは和の心を込めて作られました
+    </p>
+  </div>
+
+  <div class="jpattern-bottom"></div>
+
+</div>
+
+<script>
+  // Visitor counter
+  let n = parseInt(localStorage.getItem('zorkVisits') || '0') + 1;
+  localStorage.setItem('zorkVisits', n);
+  const s = String(n).padStart(6, '0');
+  document.getElementById('counter1').textContent = s.slice(0,2);
+  document.getElementById('counter2').textContent = s.slice(2,4);
+  document.getElementById('counter3').textContent = s.slice(4,6);
+</script>
+
+</body>
+</html>

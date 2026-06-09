@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>禅オフィス | HAIKU</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Noto Serif JP', 'Zen Old Mincho', serif;
+      background: #1a1108;
+      color: #e8dcc8;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,240,0.015) 2px, rgba(255,255,240,0.015) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(255,255,240,0.01) 3px, rgba(255,255,240,0.01) 5px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 10px 20px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .jpattern-top {
+      height: 16px;
+      background: radial-gradient(circle at 8px 8px, #c0392b 3px, transparent 4px);
+      background-size: 16px 16px;
+      opacity: 0.5;
+      margin-bottom: 5px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 15px 10px;
+      border: 3px double #8b0000;
+      background: linear-gradient(180deg, rgba(30,15,5,0.95), rgba(20,10,5,0.95));
+      margin-bottom: 15px;
+    }
+
+    .header h1 {
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 32px;
+      margin: 5px 0;
+      color: #f5e6d3;
+      text-shadow: 2px 2px 0 #4a0000, 0 0 40px rgba(139,0,0,0.3);
+      letter-spacing: 10px;
+    }
+
+    .header .sub {
+      font-size: 13px;
+      color: #b8956a;
+      letter-spacing: 3px;
+    }
+
+    .nav {
+      text-align: center;
+      margin: 12px 0;
+      padding: 10px 8px;
+      border-top: 2px solid #5a3d2b;
+      border-bottom: 2px solid #5a3d2b;
+      background: rgba(20,10,5,0.6);
+    }
+
+    .nav a:not(.nav-btn):not(.flag-btn) {
+      display: inline-block;
+      color: #d4a574;
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 2px;
+      margin: 3px 8px;
+      padding: 3px 6px;
+      border: 1px solid transparent;
+      transition: 0.2s;
+    }
+
+    .nav a:hover {
+      color: #f5e6d3;
+      border-color: #8b0000;
+      background: rgba(139,0,0,0.2);
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      font-size: 1.1rem;
+      line-height: 1;
+      border-radius: 999px;
+      transition: 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      border: 2px solid rgba(139,0,0,0.3);
+      background: rgba(139,0,0,0.1);
+      color: #d4a574;
+      vertical-align: middle;
+      margin: 0 3px;
+    }
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(139,0,0,0.25);
+      border-color: #8b0000;
+      color: #f5e6d3;
+    }
+    .flag-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      font-size: 1.2rem;
+      line-height: 1;
+      border-radius: 999px;
+      transition: 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      border: 2px solid rgba(139,0,0,0.3);
+      background: rgba(139,0,0,0.1);
+      vertical-align: middle;
+      margin: 0 3px;
+    }
+    .flag-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(139,0,0,0.25);
+      border-color: #8b0000;
+    }
+
+    .gif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 8px 0;
+    }
+
+    .gif-inline {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 4px;
+      image-rendering: pixelated;
+    }
+
+    .haiku-section {
+      text-align: center;
+      margin: 30px 0;
+    }
+
+    .haiku-scroll {
+      display: inline-block;
+      padding: 50px 60px;
+      border: 3px double #8b0000;
+      background: linear-gradient(180deg, rgba(30,15,8,0.95), rgba(15,8,4,0.95));
+      position: relative;
+      min-width: 320px;
+    }
+
+    .haiku-scroll::before,
+    .haiku-scroll::after {
+      content: '❀';
+      position: absolute;
+      font-size: 16px;
+      color: #8b0000;
+      opacity: 0.4;
+    }
+    .haiku-scroll::before { top: 12px; left: 18px; }
+    .haiku-scroll::after { bottom: 12px; right: 18px; }
+
+    .haiku-roll {
+      font-size: 11px;
+      color: #7a6a58;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+    }
+
+    .haiku-text {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 24px;
+      line-height: 2;
+      color: #f5e6d3;
+      letter-spacing: 4px;
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+      margin: 15px 0;
+    }
+
+    .haiku-text .line {
+      display: block;
+      margin: 8px 0;
+    }
+
+    .haiku-text .jp {
+      color: #c0392b;
+      font-size: 14px;
+      letter-spacing: 6px;
+      margin-right: 8px;
+    }
+
+    .haiku-reading {
+      font-size: 13px;
+      color: #b8956a;
+      letter-spacing: 2px;
+      margin: 10px 0;
+      line-height: 1.8;
+    }
+
+    .haiku-trans {
+      font-size: 12px;
+      color: #7a6a58;
+      font-style: italic;
+      letter-spacing: 1px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #3a2518;
+    }
+
+    .haiku-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 30px;
+      background: transparent;
+      color: #d4a574;
+      border: 2px solid #8b0000;
+      font-size: 14px;
+      letter-spacing: 4px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: 'Noto Serif JP', serif;
+    }
+
+    .haiku-btn:hover {
+      background: rgba(139,0,0,0.2);
+      color: #f5e6d3;
+    }
+
+    .auto-indicator {
+      font-size: 11px;
+      color: #5a3d2b;
+      margin-top: 8px;
+      letter-spacing: 2px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 15px 10px;
+      margin-top: 25px;
+      border-top: 2px solid #3a2518;
+      font-size: 11px;
+      color: #6a5a48;
+      letter-spacing: 2px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border: 1px solid #3a2518;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #7a6a58;
+      background: rgba(10,5,3,0.4);
+    }
+
+    @media (max-width: 500px) {
+      .haiku-scroll { padding: 30px 25px; min-width: auto; }
+      .haiku-text { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="jpattern-top"></div>
+
+  <div class="header">
+    <h1>禅 HAIKU</h1>
+    <p class="sub">— ZenOffice Poetry Generator —</p>
+  </div>
+
+  <div class="nav">
+    <a href="zork.html">【 ZEN HOME 】</a>
+    <a href="zorkmusic.html">【 禅 音楽 】</a>
+    <a href="zenplay.html">【 禅 PLAY 】</a>
+    <a href="zenhaiku.html">【 禅 HAIKU 】</a>
+    <a href="zorkshooter.html">【 禅 SHOOTER 】</a>
+    <a class="nav-btn" href="zenhaiku2.html" title="ZenHaiku2 (tume)">☽</a>
+    <a class="flag-btn" href="index.html" title="ZenOffice">🇪🇪</a>
+  </div>
+
+  <div class="haiku-section">
+    <div class="haiku-scroll" id="haikuScroll">
+      <div class="haiku-roll">〜 俳句 〜</div>
+      <div class="haiku-text" id="haikuDisplay"></div>
+      <div class="haiku-reading" id="haikuReading"></div>
+      <div class="haiku-trans" id="haikuTranslation"></div>
+      <div class="auto-indicator" id="autoIndicator">✦ 自動生成 ✦</div>
+      <button class="haiku-btn" id="newHaikuBtn">☯ 新たな俳句</button>
+    </div>
+  </div>
+
+  <div class="gif-row" style="margin:15px 0">
+    <img class="gif-inline" src="https://blob.gifcities.org/gifcities/FACUTSNQ3ALNV5NR323A3A2XBKVE5S2J.gif" alt="Made with" width="88" height="31">
+    <img class="gif-inline" src="https://blob.gifcities.org/gifcities/NHYM2V3DQF6T6EPECTLQ66AIAHSRT7X5.gif" alt="Button" width="88" height="31">
+    <img class="gif-inline" src="https://blob.gifcities.org/gifcities/GR3L6SX6IGQJOJDW7JXIGM6KOKS364LY.gif" alt="Poetry" width="50" height="50">
+  </div>
+
+  <div class="footer">
+    <div class="gif-row">
+      <span class="badge">禪</span>
+      <span class="badge">HAIKU</span>
+      <span class="badge">和</span>
+    </div>
+    <p style="margin:8px 0 0">ZenOffice HAIKU — 言葉の静けさ</p>
+  </div>
+
+  <div class="jpattern-top" style="margin-top:5px"></div>
+</div>
+
+<script>
+  const HAIKUS = [
+    {
+      lines: ['静けさや', '岩にしみいる', '蝉の声'],
+      reading: ['Shizukesa ya', 'Iwa ni shimiiru', 'Semi no koe'],
+      trans: 'Silence — the cicada\'s cry penetrates the rocks',
+    },
+    {
+      lines: ['古池や', '蛙飛びこむ', '水の音'],
+      reading: ['Furuike ya', 'Kawazu tobikomu', 'Mizu no oto'],
+      trans: 'Old pond — a frog jumps in, sound of water',
+    },
+    {
+      lines: ['春の海', 'ひねもすのたり', 'のたりかな'],
+      reading: ['Haru no umi', 'Hinemosu notari', 'Notari kana'],
+      trans: 'Spring ocean — gently swelling, gently ebbing',
+    },
+    {
+      lines: ['秋深き', '隣は何を', 'する人ぞ'],
+      reading: ['Aki fukaki', 'Tonari wa nani o', 'Suru hito zo'],
+      trans: 'Deep autumn — what is my neighbor doing?',
+    },
+    {
+      lines: ['菜の花や', '月は東に', '日は西に'],
+      reading: ['Nanohana ya', 'Tsuki wa higashi ni', 'Hi wa nishi ni'],
+      trans: 'Rape blossoms — moon in the east, sun in the west',
+    },
+    {
+      lines: ['雪とけて', '村いっぱいの', '子どもかな'],
+      reading: ['Yuki tokete', 'Mura ippai no', 'Kodomo kana'],
+      trans: 'Snow melts — the village fills with children',
+    },
+    {
+      lines: ['朝顔に', '釣瓶取られて', 'もらい水'],
+      reading: ['Asagao ni', 'Tsurube torarete', 'Moraimizu'],
+      trans: 'Morning glory — the bucket taken, I ask for water',
+    },
+    {
+      lines: ['五月雨を', '集めて早し', '最上川'],
+      reading: ['Samidare o', 'Atsumete hayashi', 'Mogamigawa'],
+      trans: 'Gathering the rain — swift Mogami River',
+    },
+    {
+      lines: ['閑かさや', '岩にしみ入る', '蝉の声'],
+      reading: ['Shizukasa ya', 'Iwa ni shimiiru', 'Semi no koe'],
+      trans: 'How silent — the cicada\'s voice seeps into the rocks',
+    },
+    {
+      lines: ['行く春や', '鳥啼き魚の', '目は泪'],
+      reading: ['Iku haru ya', 'Tori naki uo no', 'Me wa namida'],
+      trans: 'Spring departing — birds cry, fish eyes fill with tears',
+    },
+    {
+      lines: ['蛸壺や', 'はかなき夢を', '夏の月'],
+      reading: ['Takotsubo ya', 'Hakanaki yume o', 'Natsu no tsuki'],
+      trans: 'Octopus pot — a fleeting dream, the summer moon',
+    },
+    {
+      lines: ['枯枝に', '烏のとまりけり', '秋の暮'],
+      reading: ['Kareeda ni', 'Karasu no tomarikeri', 'Aki no kure'],
+      trans: 'On a withered branch — a crow settles, autumn evening',
+    },
+  ];
+
+  let autoTimer = null;
+
+  function pickRandom() {
+    const idx = Math.floor(Math.random() * HAIKUS.length);
+    const h = HAIKUS[idx];
+
+    const display = document.getElementById('haikuDisplay');
+    display.innerHTML = h.lines.map(l => '<span class="line">' + l + '</span>').join('');
+
+    const reading = document.getElementById('haikuReading');
+    reading.textContent = h.reading.join(' ／ ');
+
+    const trans = document.getElementById('haikuTranslation');
+    trans.textContent = h.trans;
+  }
+
+  function startAutoCycle() {
+    if (autoTimer) clearInterval(autoTimer);
+    autoTimer = setInterval(pickRandom, 8000);
+  }
+
+  document.getElementById('newHaikuBtn').addEventListener('click', () => {
+    pickRandom();
+    startAutoCycle();
+  });
+
+  pickRandom();
+  startAutoCycle();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>禅オフィス | PLAY</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Noto Serif JP', 'Zen Old Mincho', serif;
+      background: #0a0e1a;
+      color: #c8d8e8;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(200,220,255,0.015) 2px, rgba(200,220,255,0.015) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(200,220,255,0.01) 3px, rgba(200,220,255,0.01) 5px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 10px 20px 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .jpattern-top {
+      height: 16px;
+      background: radial-gradient(circle at 8px 8px, #3a7ab5 3px, transparent 4px);
+      background-size: 16px 16px;
+      opacity: 0.5;
+      margin-bottom: 5px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 15px 10px;
+      border: 3px double #1a3a6b;
+      background: linear-gradient(180deg, rgba(5,10,20,0.95), rgba(3,8,15,0.95));
+      margin-bottom: 15px;
+    }
+
+    .header h1 {
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 32px;
+      margin: 5px 0;
+      color: #d0e0f0;
+      text-shadow: 2px 2px 0 #00204a, 0 0 40px rgba(26,58,107,0.3);
+      letter-spacing: 10px;
+    }
+
+    .header .sub {
+      font-size: 13px;
+      color: #6a8ab5;
+      letter-spacing: 3px;
+    }
+
+    .nav {
+      text-align: center;
+      margin: 12px 0;
+      padding: 10px 8px;
+      border-top: 2px solid #2a3a5a;
+      border-bottom: 2px solid #2a3a5a;
+      background: rgba(3,8,15,0.6);
+    }
+
+    .nav a:not(.nav-btn):not(.flag-btn) {
+      display: inline-block;
+      color: #8ab5d4;
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 2px;
+      margin: 3px 8px;
+      padding: 3px 6px;
+      border: 1px solid transparent;
+      transition: 0.2s;
+    }
+
+    .nav a:hover {
+      color: #d0e0f0;
+      border-color: #1a3a6b;
+      background: rgba(26,58,107,0.2);
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      font-size: 1.1rem;
+      line-height: 1;
+      border-radius: 999px;
+      transition: 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      border: 2px solid rgba(26,58,107,0.3);
+      background: rgba(26,58,107,0.1);
+      color: #8ab5d4;
+      vertical-align: middle;
+      margin: 0 3px;
+    }
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(26,58,107,0.25);
+      border-color: #1a3a6b;
+      color: #d0e0f0;
+    }
+    .flag-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      font-size: 1.2rem;
+      line-height: 1;
+      border-radius: 999px;
+      transition: 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      border: 2px solid rgba(26,58,107,0.3);
+      background: rgba(26,58,107,0.1);
+      vertical-align: middle;
+      margin: 0 3px;
+    }
+    .flag-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(26,58,107,0.25);
+      border-color: #1a3a6b;
+    }
+
+    .gif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 8px 0;
+    }
+
+    .gif-inline {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 4px;
+      image-rendering: pixelated;
+    }
+
+    .piano-section {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .piano-section .info {
+      font-size: 12px;
+      color: #5a7a9a;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+    }
+
+    .piano-wrap {
+      display: inline-block;
+      position: relative;
+      padding: 20px 20px 15px;
+      border: 2px solid #2a3a5a;
+      background: rgba(5,8,15,0.85);
+    }
+
+    .piano-title {
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 14px;
+      color: #6a8ab5;
+      letter-spacing: 4px;
+      margin-bottom: 12px;
+    }
+
+    .piano {
+      display: flex;
+      position: relative;
+      height: 200px;
+      user-select: none;
+    }
+
+    .key {
+      position: relative;
+      cursor: pointer;
+      border-radius: 0 0 5px 5px;
+      transition: 0.08s;
+    }
+
+    .key.white {
+      width: 48px;
+      height: 200px;
+      background: linear-gradient(180deg, #d0e0f0 0%, #b0c8d8 85%, #8aafc0 100%);
+      border: 1px solid #2a3a5a;
+      margin-right: 1px;
+      z-index: 1;
+    }
+    .key.white:last-child { margin-right: 0; }
+    .key.white.active {
+      background: linear-gradient(180deg, #8ab5d4 0%, #3a7ab5 100%);
+      height: 192px;
+    }
+    .key.white .label {
+      position: absolute;
+      bottom: 12px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 11px;
+      color: #2a3a5a;
+      pointer-events: none;
+      font-family: monospace;
+    }
+    .key.white.active .label { color: #d0e0f0; }
+
+    .key.black {
+      width: 32px;
+      height: 120px;
+      background: linear-gradient(180deg, #0a1020 0%, #080e1a 85%, #040810 100%);
+      border: 1px solid #040810;
+      border-radius: 0 0 4px 4px;
+      z-index: 2;
+      margin-left: -16px;
+      margin-right: -16px;
+    }
+    .key.black.active {
+      background: linear-gradient(180deg, #00204a 0%, #1a3a6b 100%);
+      height: 114px;
+    }
+    .key.black .label {
+      position: absolute;
+      bottom: 8px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 9px;
+      color: #5a7a9a;
+      pointer-events: none;
+      font-family: monospace;
+    }
+    .key.black.active .label { color: #d0e0f0; }
+
+    .key-label-row {
+      display: flex;
+      justify-content: center;
+      gap: 1px;
+      margin-top: 6px;
+    }
+    .key-label-row span {
+      width: 48px;
+      text-align: center;
+      font-size: 10px;
+      color: #5a7a9a;
+      font-family: monospace;
+    }
+
+    .octave-label {
+      font-size: 11px;
+      color: #2a3a5a;
+      margin: 8px 0 4px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 15px 10px;
+      margin-top: 25px;
+      border-top: 2px solid #1a2a3a;
+      font-size: 11px;
+      color: #4a6a8a;
+      letter-spacing: 2px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border: 1px solid #1a2a3a;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: #5a7a9a;
+      background: rgba(3,5,10,0.4);
+    }
+
+    @media (max-width: 700px) {
+      .key.white { width: 36px; }
+      .key.black { width: 24px; margin-left: -12px; margin-right: -12px; }
+      .key-label-row span { width: 36px; }
+      .piano { height: 160px; }
+      .key.white { height: 160px; }
+      .key.black { height: 96px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="jpattern-top"></div>
+
+  <div class="header">
+    <h1>禅 PLAY</h1>
+    <p class="sub">— ZenOffice Piano —</p>
+  </div>
+
+  <div class="nav">
+    <a href="zork2.html">【 ZEN HOME 】</a>
+    <a href="zorkmusic2.html">【 禅 音楽 】</a>
+    <a href="zenplay2.html">【 禅 PLAY 】</a>
+    <a href="zenhaiku2.html">【 禅 HAIKU 】</a>
+    <a href="zorkshooter2.html">【 禅 SHOOTER 】</a>
+    <a class="nav-btn" href="zenplay.html" title="ZenPlay (hele)">☀</a>
+    <a class="flag-btn" href="index2.html" title="ZenOffice">🇪🇪</a>
+  </div>
+
+  <div class="piano-section">
+    <div class="piano-wrap">
+      <div class="piano-title">〜 ピアノ 〜</div>
+      <div class="piano" id="piano"></div>
+      <div class="octave-label">C4 ─────────────────────── C5</div>
+      <div class="info">klõpsi hiirega või vajuta klaviatuuril</div>
+    </div>
+  </div>
+
+  <div class="gif-row" style="margin:15px 0">
+    <img class="gif-inline" src="https://blob.gifcities.org/gifcities/FACUTSNQ3ALNV5NR323A3A2XBKVE5S2J.gif" alt="Made with" width="88" height="31">
+    <img class="gif-inline" src="https://blob.gifcities.org/gifcities/NHYM2V3DQF6T6EPECTLQ66AIAHSRT7X5.gif" alt="Button" width="88" height="31">
+    <img class="gif-inline" src="https://blob.gifcities.org/gifcities/3JAD54YMBBV4DWDXQRHUCXMRTTYEM3IQ.gif" alt="Button" width="88" height="31">
+  </div>
+
+  <div class="footer">
+    <div class="gif-row">
+      <span class="badge">禪</span>
+      <span class="badge">PLAY</span>
+      <span class="badge">静寂</span>
+    </div>
+    <p style="margin:8px 0 0">ZenOffice PLAY — 音を楽しむ</p>
+  </div>
+
+  <div class="jpattern-top" style="margin-top:5px"></div>
+</div>
+
+<script>
+  const NOTES = [
+    { note: 'C4',  freq: 261.63, white: true,  key: 'a' },
+    { note: 'C#4', freq: 277.18, white: false, key: 'w' },
+    { note: 'D4',  freq: 293.66, white: true,  key: 's' },
+    { note: 'D#4', freq: 311.13, white: false, key: 'e' },
+    { note: 'E4',  freq: 329.63, white: true,  key: 'd' },
+    { note: 'F4',  freq: 349.23, white: true,  key: 'f' },
+    { note: 'F#4', freq: 369.99, white: false, key: 't' },
+    { note: 'G4',  freq: 392.00, white: true,  key: 'g' },
+    { note: 'G#4', freq: 415.30, white: false, key: 'y' },
+    { note: 'A4',  freq: 440.00, white: true,  key: 'h' },
+    { note: 'A#4', freq: 466.16, white: false, key: 'u' },
+    { note: 'B4',  freq: 493.88, white: true,  key: 'j' },
+    { note: 'C5',  freq: 523.25, white: true,  key: 'k' },
+    { note: 'C#5', freq: 554.37, white: false, key: 'i' },
+    { note: 'D5',  freq: 587.33, white: true,  key: 'l' },
+    { note: 'D#5', freq: 622.25, white: false, key: 'o' },
+    { note: 'E5',  freq: 659.25, white: true,  key: ';' },
+  ];
+
+  let audioCtx = null;
+  const activeOscillators = {};
+
+  function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+
+  function playNote(noteData) {
+    const id = noteData.note;
+    if (activeOscillators[id]) return;
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(noteData.freq, ctx.currentTime);
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.2, ctx.currentTime + 0.01);
+    gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.8);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.8);
+    activeOscillators[id] = { osc, gain };
+    osc.onended = () => { delete activeOscillators[id]; };
+  }
+
+  function keyDown(noteData) {
+    const el = document.querySelector(`.key[data-note="${noteData.note}"]`);
+    if (el) el.classList.add('active');
+    playNote(noteData);
+  }
+
+  function keyUp(noteData) {
+    const el = document.querySelector(`.key[data-note="${noteData.note}"]`);
+    if (el) el.classList.remove('active');
+  }
+
+  function buildPiano() {
+    const piano = document.getElementById('piano');
+    let html = '';
+    let labelRow = '<div class="key-label-row">';
+    NOTES.forEach(n => {
+      const cls = n.white ? 'key white' : 'key black';
+      html += `<div class="${cls}" data-note="${n.note}" data-key="${n.key}">
+        <span class="label">${n.white ? n.note.replace('4','').replace('5','') : n.key.toUpperCase()}</span>
+      </div>`;
+      if (n.white) labelRow += `<span>${n.key.toUpperCase()}</span>`;
+    });
+    labelRow += '</div>';
+    piano.innerHTML = html;
+    piano.insertAdjacentHTML('afterend', labelRow);
+
+    document.querySelectorAll('.key').forEach(el => {
+      el.addEventListener('mousedown', e => {
+        e.preventDefault();
+        const note = NOTES.find(n => n.note === el.dataset.note);
+        if (note) keyDown(note);
+      });
+      el.addEventListener('mouseup', () => {
+        const note = NOTES.find(n => n.note === el.dataset.note);
+        if (note) keyUp(note);
+      });
+      el.addEventListener('mouseleave', () => {
+        const note = NOTES.find(n => n.note === el.dataset.note);
+        if (note) keyUp(note);
+      });
+    });
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.repeat) return;
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    const note = NOTES.find(n => n.key === e.key.toLowerCase());
+    if (note) { e.preventDefault(); keyDown(note); }
+  });
+
+  document.addEventListener('keyup', e => {
+    const note = NOTES.find(n => n.key === e.key.toLowerCase());
+    if (note) keyUp(note);
+  });
+
+  buildPiano();
+</script>
+
+</body>
+</html>
